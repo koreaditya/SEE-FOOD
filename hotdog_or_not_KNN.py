@@ -11,6 +11,7 @@ from sklearn.decomposition import PCA
 import math
 import random
 
+
 def calculate_cartesian_distance(distance1,distance2):
     cartesian_product=0
     for i in range(len(distance1)):
