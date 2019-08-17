@@ -20,6 +20,7 @@ def calculate_cartesian_distance(distance1,distance2):
     return cartesian_distance
 
 class KNearestNeighbour(object):
+    
     #the function kNN spawns the testing datasets and calls calculate_distances
     #default value of k is 3
     def kNN(self,train_data,test_data,k=3):
