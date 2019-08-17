@@ -13,7 +13,16 @@ import random
 
 
 def calculate_cartesian_distance(distance1, distance2):
+    """
+    function calculates the cartesian distance
 
+    :param distance1: first value of point
+    :type distance1:list
+    :param distance2: second value of point
+    :type distance2: list
+    :return cartesian_distance: cartesian distance
+    :type: float
+    """
     cartesian_product=0
 
     for i in range(len(distance1)):
@@ -24,10 +33,18 @@ def calculate_cartesian_distance(distance1, distance2):
 
 
 class KNearestNeighbour(object):
-    # the function kNN spawns the testing datasets and calls calculate_distances
-    # default value of k is 3
 
     def kNN(self, train_data, test_data, k=3):
+        """
+        opens the file and calls calculate distance iteratively
+
+        :param train_data: multi dimensional list of training data points
+        :type train_data: list
+        :param test_data: multi dimensional list of testing data points
+        :type test_data: list
+        :param k: value of k
+        :type k: int
+        """
 
         self.file = open('output.txt', 'w')
         self.k = k
@@ -36,22 +53,34 @@ class KNearestNeighbour(object):
         for elements in test_data:
             self.calculate_distance(elements)
 
-    # calculate distances gets called in the function kNN, this function is called for every training dataset,
-    # this function calls calculate_cartesian_distances to calculate its distance to every training datapoint
-    # the distances are put in dictionary and sorted in ascending order, the key in dictionary is he distance and the values is the label.
-
     def calculate_distance(self, test_data_point):
+        """
+        calculate distances gets called in the function kNN, this function is called for every training dataset,
+        this function calls calculate_cartesian_distances to calculate its distance to every training datapoint
+        the distances are put in dictionary and sorted in ascending order, the key in dictionary is he distance and the values is the label.
+
+        :param test_data_point: list of test data point
+        :type test_data_point: list
+        """
         test_data_point_distances={}
         for elements in self.train_data:
             distance = calculate_cartesian_distance(elements[0], test_data_point)
             test_data_point_distances[distance] = elements
         test_data_point_distances=sorted(test_data_point_distances.items())
         self.clasify(test_data_point_distances, test_data_point)
-    #in classify function we iterate through the test_data_point_distances which has distances in sorted order
-    #we add first k smallest distances to result dictionary
-    #in result dictionary we then classify the testing data point to the label with maximum value
 
-    def clasify(self,test_data_point_distances,test_data_point):
+    def clasify(self, test_data_point_distances, test_data_point):
+        """
+        in classify function we iterate through the test_data_point_distances which has distances in sorted order
+        we add first k smallest distances to result dictionary
+        in result dictionary we then classify the testing data point to the label with maximum value
+
+        :param test_data_point_distances:
+        :type test_data_point_distances :
+        :param test_data_point:
+        :type test_data_point:
+        :return:
+        """
 
         count = 1
         class_count = {}
@@ -73,59 +102,71 @@ class KNearestNeighbour(object):
         print("The data Point : "+ str(test_data_point)+ " is Classified to Label : " + datapoint_class)
         self.file.write("The data Point : "+ str(test_data_point)+ " is Classified to Label : " + datapoint_class+'\n')
 
-    
-def generate_dataset():
-    data_dir = "train/"
-    category = ["hot_dog", "not_hot_dog"]
-    train_data = []
-    hot_dog_count = 0
-    for elements in category:
-        path=os.path.join(data_dir, elements)
-        for images in os.listdir(path):
-            if elements == "hot_dog":
-                hot_dog_count += 1
-            image_array = cv2.imread(os.path.join(path, images), cv2.IMREAD_GRAYSCALE)
-            image_array = cv2.resize(image_array, (50, 50))
-            image_array = image_array.reshape(-1)
-            train_data.append(image_array)
-            
-    data_dir="test/"
-    test_data=[]
-    for elements in category:
-        path=os.path.join(data_dir,elements)
-        for images in os.listdir(path):
-            image_array = cv2.imread(os.path.join(path, images), cv2.IMREAD_GRAYSCALE)
-            image_array = cv2.resize(image_array, (50, 50))
-            image_array = image_array.reshape(-1)
-            test_data.append(image_array)
-            
-    return train_data, test_data, hot_dog_count
-a,b,hot_dog_count=generate_dataset()
+
+def __main__():
+    """
+
+    :return:
+    """
+    def generate_dataset():
+        """
+
+        """
+        data_dir = "train/"
+        category = ["hot_dog", "not_hot_dog"]
+        train_data = []
+        hot_dog_count = 0
+        for elements in category:
+            path=os.path.join(data_dir, elements)
+            for images in os.listdir(path):
+                if elements == "hot_dog":
+                    hot_dog_count += 1
+                image_array = cv2.imread(os.path.join(path, images), cv2.IMREAD_GRAYSCALE)
+                image_array = cv2.resize(image_array, (50, 50))
+                image_array = image_array.reshape(-1)
+                train_data.append(image_array)
+
+        data_dir="test/"
+        test_data=[]
+        for elements in category:
+            path=os.path.join(data_dir,elements)
+            for images in os.listdir(path):
+                image_array = cv2.imread(os.path.join(path, images), cv2.IMREAD_GRAYSCALE)
+                image_array = cv2.resize(image_array, (50, 50))
+                image_array = image_array.reshape(-1)
+                test_data.append(image_array)
+
+        return train_data, test_data, hot_dog_count
 
 
-scaler=StandardScaler()
-scaled_data_train=scaler.fit_transform(a)
-pca=PCA(n_components=3)
-pca.fit_transform(scaled_data_train)
-x_pca=pca.transform(scaled_data_train)
+    a,b,hot_dog_count=generate_dataset()
 
-scaled_data_test=scaler.transform(b)
-pca.transform(scaled_data_test)
-y_pca=pca.transform(scaled_data_test)
 
-D=[]
-print(hot_dog_count)
-for elements in a:
-    if hot_dog_count>0:
-        D.append([elements,"H"])
-        hot_dog_count-=1
-    else:
-        D.append([elements,"N"])
-t=[1 for i in range(12)]
-for i in range(12):
-    t.append(0)
-random.shuffle(D)
-T=y_pca
-obj = KNearestNeighbour()
-obj.kNN(D, T, 3)
+    scaler=StandardScaler()
+    scaled_data_train=scaler.fit_transform(a)
+    pca=PCA(n_components=3)
+    pca.fit_transform(scaled_data_train)
+    x_pca=pca.transform(scaled_data_train)
 
+    scaled_data_test=scaler.transform(b)
+    pca.transform(scaled_data_test)
+    y_pca=pca.transform(scaled_data_test)
+
+    D=[]
+    print(hot_dog_count)
+    for elements in a:
+        if hot_dog_count>0:
+            D.append([elements,"H"])
+            hot_dog_count-=1
+        else:
+            D.append([elements,"N"])
+    t=[1 for i in range(12)]
+    for i in range(12):
+        t.append(0)
+    random.shuffle(D)
+    T=y_pca
+    obj = KNearestNeighbour()
+    obj.kNN(D, T, 3)
+
+if __name__ == __main__():
+    __main__()
