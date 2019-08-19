@@ -16,14 +16,14 @@ def calculate_cartesian_distance(distance1, distance2):
     """
     function calculates the cartesian distance
 
-    :param distance1: first value of point
-    :type distance1:list
-    :param distance2: second value of point
-    :type distance2: list
-    :return cartesian_distance: cartesian distance
+    :param distance1: values of training data point
+    :type distance1:tuple
+    :param distance2: values of testing data points
+    :type distance2: tuple
+    :return cartesian_distance: cartesian distance between training and testing data points
     :type: float
     """
-    cartesian_product=0
+    cartesian_product = 0
 
     for i in range(len(distance1)):
         cartesian_product = cartesian_product+(distance1[i]-distance2[i])**2
@@ -34,7 +34,7 @@ def calculate_cartesian_distance(distance1, distance2):
 
 class KNearestNeighbour(object):
 
-    def kNN(self, train_data, test_data, k=3):
+    def __init__(self, train_data, test_data, k=3):
         """
         opens the file and calls calculate distance iteratively
 
@@ -45,12 +45,14 @@ class KNearestNeighbour(object):
         :param k: value of k
         :type k: int
         """
-
-        self.file = open('output.txt', 'w')
-        self.k = k
-        self.file.write("k value is : " + str(self.k)+'\n')
         self.train_data = train_data
-        for elements in test_data:
+        self.test_data = test_data
+        self.k = k
+        self.file = open('output.txt', 'w')
+
+    def kNN(self):
+        self.file.write("k value is : " + str(self.k)+'\n')
+        for elements in self.test_data:
             self.calculate_distance(elements)
 
     def calculate_distance(self, test_data_point):
@@ -67,19 +69,18 @@ class KNearestNeighbour(object):
             distance = calculate_cartesian_distance(elements[0], test_data_point)
             test_data_point_distances[distance] = elements
         test_data_point_distances=sorted(test_data_point_distances.items())
-        self.clasify(test_data_point_distances, test_data_point)
+        self.classify(test_data_point_distances, test_data_point)
 
-    def clasify(self, test_data_point_distances, test_data_point):
+    def classify(self, test_data_point_distances, test_data_point):
         """
         in classify function we iterate through the test_data_point_distances which has distances in sorted order
         we add first k smallest distances to result dictionary
         in result dictionary we then classify the testing data point to the label with maximum value
 
-        :param test_data_point_distances:
-        :type test_data_point_distances :
-        :param test_data_point:
-        :type test_data_point:
-        :return:
+        :param test_data_point_distances: distances between each testing data point and training data point.
+        :type test_data_point_distances : list
+        :param test_data_point: testing data point
+        :type test_data_point: tuple
         """
 
         count = 1
@@ -90,7 +91,7 @@ class KNearestNeighbour(object):
                 class_count[elements[-1][-1]] = 1
             else:
                 class_count[elements[-1][-1]] += 1
-            if count == k:
+            if count == self.k:
                 break
             count += 1
         max_count=0
@@ -106,7 +107,6 @@ class KNearestNeighbour(object):
 def __main__():
     """
 
-    :return:
     """
     def generate_dataset():
         """
@@ -138,35 +138,34 @@ def __main__():
 
         return train_data, test_data, hot_dog_count
 
+    a, b, hot_dog_count = generate_dataset()
 
-    a,b,hot_dog_count=generate_dataset()
-
-
-    scaler=StandardScaler()
+    scaler = StandardScaler()
     scaled_data_train=scaler.fit_transform(a)
-    pca=PCA(n_components=3)
+    pca = PCA(n_components=3)
     pca.fit_transform(scaled_data_train)
-    x_pca=pca.transform(scaled_data_train)
+    x_pca = pca.transform(scaled_data_train)
 
-    scaled_data_test=scaler.transform(b)
+    scaled_data_test = scaler.transform(b)
     pca.transform(scaled_data_test)
-    y_pca=pca.transform(scaled_data_test)
+    y_pca = pca.transform(scaled_data_test)
 
-    D=[]
+    D = []
     print(hot_dog_count)
     for elements in a:
-        if hot_dog_count>0:
-            D.append([elements,"H"])
-            hot_dog_count-=1
+        if hot_dog_count > 0:
+            D.append([elements, "H"])
+            hot_dog_count -= 1
         else:
-            D.append([elements,"N"])
-    t=[1 for i in range(12)]
+            D.append([elements, "N"])
+    t = [1 for i in range(12)]
     for i in range(12):
         t.append(0)
     random.shuffle(D)
-    T=y_pca
-    obj = KNearestNeighbour()
-    obj.kNN(D, T, 3)
+    T = y_pca
+    obj = KNearestNeighbour(D, T, 3)
+    obj.kNN()
+
 
 if __name__ == __main__():
     __main__()
