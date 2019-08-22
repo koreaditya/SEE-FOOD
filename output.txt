@@ -1,0 +1,25 @@
+k value is : 7
+The data Point : [-35.65072729   2.42944378  -8.80780375] is Classified to Label : N
+The data Point : [-21.32582267  -2.03104494 -10.85143275] is Classified to Label : H
+The data Point : [-14.43537019  13.31569267  -3.4890742 ] is Classified to Label : H
+The data Point : [-19.07674754  13.84142032   8.20145644] is Classified to Label : H
+The data Point : [36.28811614 -6.50367202 -8.55802604] is Classified to Label : N
+The data Point : [19.15543769  4.74601142 -4.5040704 ] is Classified to Label : H
+The data Point : [-13.34443233  18.93541365   2.16201708] is Classified to Label : H
+The data Point : [16.76082271 -0.56849763 -8.8910423 ] is Classified to Label : H
+The data Point : [-27.64344912   3.83175583  -2.79708389] is Classified to Label : H
+The data Point : [ -0.07264205 -34.4216344  -12.14388064] is Classified to Label : N
+The data Point : [-26.28135888   3.29705046 -16.96564315] is Classified to Label : H
+The data Point : [-8.81350229  9.50627449  8.2074635 ] is Classified to Label : H
+The data Point : [ 31.65332234   5.17765582 -17.77093973] is Classified to Label : H
+The data Point : [20.46681498 -7.38193445  9.84906861] is Classified to Label : N
+The data Point : [-4.1469684  11.99511747  9.72721798] is Classified to Label : H
+The data Point : [ 21.07316995 -13.47468147   9.41200581] is Classified to Label : N
+The data Point : [ 18.68248064 -18.93150318  11.04692711] is Classified to Label : N
+The data Point : [-11.09967682  -5.33041471  -1.49127131] is Classified to Label : N
+The data Point : [ 22.40876396 -17.18247489   0.93121336] is Classified to Label : N
+The data Point : [ 3.11056814  8.47376662 11.37580549] is Classified to Label : H
+The data Point : [11.21763701  0.41563167  7.96989133] is Classified to Label : H
+The data Point : [-52.03663981  -1.7720877   11.64930297] is Classified to Label : N
+The data Point : [ -7.44921702 -25.81720966   2.32297803] is Classified to Label : N
+The data Point : [-25.30758161  -2.87394736   4.01631035] is Classified to Label : N

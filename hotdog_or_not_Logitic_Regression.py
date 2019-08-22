@@ -148,7 +148,7 @@ def __main__():
 
     D = []
     print(hot_dog_count)
-    for elements in a:
+    for elements in x_pca:
         if hot_dog_count > 0:
             D.append([elements, "H"])
             hot_dog_count -= 1
