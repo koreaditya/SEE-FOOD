@@ -135,8 +135,9 @@ class KNearestNeighbour(object):
 
 
 def __main__():
-    """
 
+    """
+    the main function gets the dataset by calling the generate_dataset function
     """
     train_dataset, test_dataset, hot_dog_count = generate_dataset()
 
