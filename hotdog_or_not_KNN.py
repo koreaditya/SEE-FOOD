@@ -108,7 +108,6 @@ class KNearestNeighbour(object):
         :param test_data_point: testing data point
         :type test_data_point: tuple
         """
-
         count = 1
         class_count = {}
         for elements in test_data_point_distances:
@@ -137,16 +136,18 @@ class KNearestNeighbour(object):
 def __main__():
 
     """
-    the main function gets the dataset by calling the generate_dataset function
+    the main function gets the dataset by calling the generate_dataset function.
+    performs transformation of data and performs principle component analysis.
+    calls knn function which performs classification
     """
     train_dataset, test_dataset, hot_dog_count = generate_dataset()
 
-    scaler = StandardScaler()
-    scaled_data_train = scaler.fit_transform(train_dataset)
+    scalar = StandardScaler()
+    scaled_data_train = scalar.fit_transform(train_dataset)
     pca = PCA(n_components=3)
     pca.fit_transform(scaled_data_train)
 
-    scaled_data_test = scaler.transform(test_dataset)
+    scaled_data_test = scalar.transform(test_dataset)
     pca.transform(scaled_data_test)
     y_pca = pca.transform(scaled_data_test)
 
@@ -158,13 +159,15 @@ def __main__():
             hot_dog_count -= 1
         else:
             training_data.append([elements, "N"])
+
     t = [1 for i in range(12)]
     for i in range(12):
         t.append(0)
+
     random.shuffle(training_data)
     T = y_pca
-    print("train",training_data[0])
-    print("t",T)
+    print("train", training_data[0])
+    print("t", T)
     obj = KNearestNeighbour(training_data, T, 3)
     obj.kNN()
 
